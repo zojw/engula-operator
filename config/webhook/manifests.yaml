@@ -1,0 +1,56 @@
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-engulacluster
+  failurePolicy: Fail
+  name: mengulacluster.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - engulaclusters
+  sideEffects: None
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-engulacluster
+  failurePolicy: Fail
+  name: vengulacluster.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - engulaclusters
+  sideEffects: None
