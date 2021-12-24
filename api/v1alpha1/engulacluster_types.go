@@ -92,7 +92,7 @@ type Engine struct {
 	// (Optional) Port use for expose serivce.
 	// Default: 245678
 	// +optional
-	Port *int32 `json:"Port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
@@ -111,7 +111,7 @@ type Storage struct {
 	// (Optional) Port use for expose serivce.
 	// Default: 245679
 	// +optional
-	Port *int32 `json:"Port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
@@ -133,7 +133,7 @@ type Journal struct {
 	// (Optional) Port use for expose serivce.
 	// Default: 245680
 	// +optional
-	Port *int32 `json:"Port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
@@ -155,7 +155,7 @@ type Background struct {
 	// (Optional) Port use for expose serivce.
 	// Default: 245681
 	// +optional
-	Port *int32 `json:"Port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional

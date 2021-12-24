@@ -1,7 +1,7 @@
 domain: engula.io
 layout:
 - go.kubebuilder.io/v3
-projectName: engula-operator-bak
+projectName: engula-operator
 repo: github.com/engula/engula-operator
 resources:
 - api:

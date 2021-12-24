@@ -9,28 +9,7 @@ spec:
     pullPolicy: "Always"
   kernel:
     replicas: 1
-    volume:
-      pvc:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: "2Gi"
-          volumeMode: Filesystem
-  journal:
-    replicas: 1
-    volume:
-      pvc:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: "2Gi"
-          volumeMode: Filesystem
-  storage:
-    replicas: 1
+    port: 245677
     volume:
       pvc:
         spec:
@@ -42,5 +21,31 @@ spec:
           volumeMode: Filesystem
   engine:
     replicas: 1
+    port: 245678
+  storage:
+    replicas: 1
+    port: 245679
+    volume:
+      pvc:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: "2Gi"
+          volumeMode: Filesystem
+  journal:
+    replicas: 1
+    port: 245680
+    volume:
+      pvc:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: "2Gi"
+          volumeMode: Filesystem
   background:
     replicas: 1
+    port: 245681

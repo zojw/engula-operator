@@ -40,11 +40,6 @@ spec:
                 description: (Optional) Background defines the desired state of Background
                   service in cluster.
                 properties:
-                  Port:
-                    description: '(Optional) Port use for expose serivce. Default:
-                      245681'
-                    format: int32
-                    type: integer
                   image:
                     description: (Optional) Image uses for background. use EngulaCluster's
                       image if not specified
@@ -60,6 +55,11 @@ spec:
                     required:
                     - name
                     type: object
+                  port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245681'
+                    format: int32
+                    type: integer
                   replicas:
                     description: Number of background replicas (pods) in the cluster
                     format: int32
@@ -99,11 +99,6 @@ spec:
                 description: (Optional) Engine defines the desired state of Engine
                   service in cluster.
                 properties:
-                  Port:
-                    description: '(Optional) Port use for expose serivce. Default:
-                      245678'
-                    format: int32
-                    type: integer
                   image:
                     description: (Optional) Image uses for engine. use EngulaCluster's
                       image if not specified
@@ -119,6 +114,11 @@ spec:
                     required:
                     - name
                     type: object
+                  port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245678'
+                    format: int32
+                    type: integer
                   replicas:
                     description: Number of engine replicas (pods) in the cluster
                     format: int32
@@ -171,11 +171,6 @@ spec:
                 description: (Optional) Journal defines the desired state of Journal
                   service in cluster.
                 properties:
-                  Port:
-                    description: '(Optional) Port use for expose serivce. Default:
-                      245680'
-                    format: int32
-                    type: integer
                   image:
                     description: (Optional) Image uses for journal. use EngulaCluster's
                       image if not specified
@@ -191,6 +186,11 @@ spec:
                     required:
                     - name
                     type: object
+                  port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245680'
+                    format: int32
+                    type: integer
                   replicas:
                     description: Number of journal replicas (pods) in the cluster
                     format: int32
@@ -718,11 +718,6 @@ spec:
                 description: (Optional) Storage defines the desired state of Storage
                   service in cluster.
                 properties:
-                  Port:
-                    description: '(Optional) Port use for expose serivce. Default:
-                      245679'
-                    format: int32
-                    type: integer
                   image:
                     description: (Optional) Image uses for storage. use EngulaCluster's
                       image if not specified
@@ -738,6 +733,11 @@ spec:
                     required:
                     - name
                     type: object
+                  port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245679'
+                    format: int32
+                    type: integer
                   replicas:
                     description: Number of storage replicas (pods) in the cluster
                     format: int32
