@@ -1,0 +1,16 @@
+domain: engula.io
+layout:
+- go.kubebuilder.io/v3
+projectName: engula-operator-bak
+repo: github.com/engula/engula-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: engula.io
+  group: cluster
+  kind: EngulaCluster
+  path: github.com/engula/engula-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

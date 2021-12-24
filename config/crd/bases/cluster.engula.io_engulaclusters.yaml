@@ -1,0 +1,232 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.7.0
+  creationTimestamp: null
+  name: engulaclusters.cluster.engula.io
+spec:
+  group: cluster.engula.io
+  names:
+    kind: EngulaCluster
+    listKind: EngulaClusterList
+    plural: engulaclusters
+    singular: engulacluster
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: EngulaCluster is the Schema for the engulaclusters API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          status:
+            description: EngulaClusterStatus defines the observed state of EngulaCluster
+            type: object
+          sÏpec:
+            description: EngulaClusterSpec defines the desired state of EngulaCluster
+            properties:
+              journal:
+                description: (Optional) Journal defines the desired state of Journal
+                  service in cluster.
+                properties:
+                  Port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245680'
+                    format: int32
+                    type: integer
+                  image:
+                    description: (Optional) Image uses for journal.
+                    properties:
+                      name:
+                        description: 'Container image with version. For instance:
+                          engula/engula:v0.3'
+                        type: string
+                      pullPolicy:
+                        description: '(Optional) PullPolicy for the image, which defaults
+                          to IfNotPresent. Default: IfNotPresent'
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  replicas:
+                    description: Number of journal replicas (pods) in the cluster
+                    format: int32
+                    minimum: 0
+                    type: integer
+                  resources:
+                    description: '(Optional) Resource limits for container. Default:
+                      (not specified)'
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                required:
+                - replicas
+                type: object
+              kernel:
+                description: (Optional) Kernel defines the desired state of Kernel
+                  service in cluster.
+                properties:
+                  Port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245677'
+                    format: int32
+                    type: integer
+                  image:
+                    description: (Optional) Image uses for kernel.
+                    properties:
+                      name:
+                        description: 'Container image with version. For instance:
+                          engula/engula:v0.3'
+                        type: string
+                      pullPolicy:
+                        description: '(Optional) PullPolicy for the image, which defaults
+                          to IfNotPresent. Default: IfNotPresent'
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  replicas:
+                    description: Number of kernel replicas (pods) in the cluster
+                    format: int32
+                    minimum: 1
+                    type: integer
+                  resources:
+                    description: '(Optional) Resource limits for container. Default:
+                      (not specified)'
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                required:
+                - replicas
+                type: object
+              name:
+                description: Name is the name of EngulaCluster.
+                type: string
+              storage:
+                description: (Optional) Storage defines the desired state of Storage
+                  service in cluster.
+                properties:
+                  Port:
+                    description: '(Optional) Port use for expose serivce. Default:
+                      245679'
+                    format: int32
+                    type: integer
+                  image:
+                    description: (Optional) Image uses for storage.
+                    properties:
+                      name:
+                        description: 'Container image with version. For instance:
+                          engula/engula:v0.3'
+                        type: string
+                      pullPolicy:
+                        description: '(Optional) PullPolicy for the image, which defaults
+                          to IfNotPresent. Default: IfNotPresent'
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  replicas:
+                    description: Number of storage replicas (pods) in the cluster
+                    format: int32
+                    minimum: 0
+                    type: integer
+                  resources:
+                    description: '(Optional) Resource limits for container. Default:
+                      (not specified)'
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                        type: object
+                    type: object
+                required:
+                - replicas
+                type: object
+            required:
+            - name
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

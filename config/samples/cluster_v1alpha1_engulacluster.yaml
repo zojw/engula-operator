@@ -1,0 +1,6 @@
+apiVersion: cluster.engula.io/v1alpha1
+kind: EngulaCluster
+metadata:
+  name: engulacluster-sample
+spec:
+  # TODO(user): Add fields here
