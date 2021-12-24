@@ -33,17 +33,29 @@ type EngulaClusterSpec struct {
 	// +kubebuilder:validation:Required
 	Name string `json:"name"`
 
+	// (Optional) Default image for other components in cluster.
+	// +optional
+	Image *PodImage `json:"image,omitempty"`
+
 	// (Optional) Kernel defines the desired state of Kernel service in cluster.
 	// +optional
-	Kernel Kernel `json:"kernel"`
+	Kernel *Kernel `json:"kernel,omitempty"`
 
 	// (Optional) Storage defines the desired state of Storage service in cluster.
 	// +optional
-	Storage Storage `json:"storage"`
+	Storage *Storage `json:"storage,omitempty"`
 
 	// (Optional) Journal defines the desired state of Journal service in cluster.
 	// +optional
-	Journal Journal `json:"journal"`
+	Journal *Journal `json:"journal,omitempty"`
+
+	// (Optional) Engine defines the desired state of Engine service in cluster.
+	// +optional
+	Engine *Engine `json:"engine,omitempty"`
+
+	// (Optional) Background defines the desired state of Background service in cluster.
+	// +optional
+	Background *Background `json:"background,omitempty"`
 }
 
 type Kernel struct {
@@ -51,17 +63,21 @@ type Kernel struct {
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Required
 	Replicas int32 `json:"replicas"`
-	// (Optional) Image uses for kernel.
+	// (Optional) Image uses for kernel
+	// use EngulaCluster's image if not specified
 	// +optional
-	Image *PodImage `json:"image"`
-	// (Optional) Port use for expose serivce.
+	Image *PodImage `json:"image,omitempty"`
+	// (Optional) Port use for expose service.
 	// Default: 245677
 	// +optional
-	Port *int32 `json:"Port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
 	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	// Disk volumn configuration.
+	// +kubebuilder:validation:Required
+	Volume Volume `json:"volume"`
 }
 
 type Engine struct {
@@ -70,8 +86,9 @@ type Engine struct {
 	// +kubebuilder:validation:Required
 	Replicas int32 `json:"replicas"`
 	// (Optional) Image uses for engine.
+	// use EngulaCluster's image if not specified
 	// +optional
-	Image *PodImage `json:"image"`
+	Image *PodImage `json:"image,omitempty"`
 	// (Optional) Port use for expose serivce.
 	// Default: 245678
 	// +optional
@@ -88,8 +105,9 @@ type Storage struct {
 	// +kubebuilder:validation:Required
 	Replicas int32 `json:"replicas"`
 	// (Optional) Image uses for storage.
+	// use EngulaCluster's image if not specified
 	// +optional
-	Image *PodImage `json:"image"`
+	Image *PodImage `json:"image,omitempty"`
 	// (Optional) Port use for expose serivce.
 	// Default: 245679
 	// +optional
@@ -98,6 +116,9 @@ type Storage struct {
 	// Default: (not specified)
 	// +optional
 	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	// Disk volumn configuration.
+	// +kubebuilder:validation:Required
+	Volume Volume `json:"volume"`
 }
 
 type Journal struct {
@@ -106,8 +127,9 @@ type Journal struct {
 	// +kubebuilder:validation:Required
 	Replicas int32 `json:"replicas"`
 	// (Optional) Image uses for journal.
+	// use EngulaCluster's image if not specified
 	// +optional
-	Image *PodImage `json:"image"`
+	Image *PodImage `json:"image,omitempty"`
 	// (Optional) Port use for expose serivce.
 	// Default: 245680
 	// +optional
@@ -116,6 +138,9 @@ type Journal struct {
 	// Default: (not specified)
 	// +optional
 	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	// Disk volumn configuration.
+	// +kubebuilder:validation:Required
+	Volume Volume `json:"volume"`
 }
 
 type Background struct {
@@ -124,8 +149,9 @@ type Background struct {
 	// +kubebuilder:validation:Required
 	Replicas int32 `json:"replicas"`
 	// (Optional) Image uses for background.
+	// use EngulaCluster's image if not specified
 	// +optional
-	Image *PodImage `json:"image"`
+	Image *PodImage `json:"image,omitempty"`
 	// (Optional) Port use for expose serivce.
 	// Default: 245681
 	// +optional
@@ -147,6 +173,26 @@ type PodImage struct {
 	PullPolicyName *corev1.PullPolicy `json:"pullPolicy,omitempty"`
 }
 
+type Volume struct {
+	// (Optional) Directory from the host node's filesystem
+	// +optional
+	HostPath *corev1.HostPathVolumeSource `json:"hostPath,omitempty"`
+	// (Optional) Persistent volume to use
+	// +optional
+	VolumeClaim *VolumeClaim `json:"pvc,omitempty"`
+}
+
+// VolumeClaim wraps a persistent volume claim (PVC) to use with the container.
+// Only one of the fields should set
+type VolumeClaim struct {
+	// (Optional) PVC to request a new persistent volume
+	// +optional
+	PersistentVolumeClaimSpec corev1.PersistentVolumeClaimSpec `json:"spec,omitempty"`
+	// (Optional) Existing PVC in the same namespace
+	// +optional
+	PersistentVolumeSource corev1.PersistentVolumeClaimVolumeSource `json:"source,omitempty"`
+}
+
 // EngulaClusterStatus defines the observed state of EngulaCluster
 type EngulaClusterStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
@@ -161,7 +207,7 @@ type EngulaCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EngulaClusterSpec   `json:"sÏpec,omitempty"`
+	Spec   EngulaClusterSpec   `json:"spec,omitempty"`
 	Status EngulaClusterStatus `json:"status,omitempty"`
 }
 
