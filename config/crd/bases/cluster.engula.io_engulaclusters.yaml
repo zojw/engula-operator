@@ -991,6 +991,27 @@ spec:
             type: object
           status:
             description: EngulaClusterStatus defines the observed state of EngulaCluster
+            properties:
+              conditions:
+                description: List of conditions represents the current state of cluster
+                items:
+                  properties:
+                    lastUpdateTime:
+                      description: The last time for condition updated
+                      format: date-time
+                      type: string
+                    status:
+                      description: 'Condition status: True, False or Unknown'
+                      type: string
+                    type:
+                      description: Type of the condition
+                      type: string
+                  required:
+                  - lastUpdateTime
+                  - status
+                  - type
+                  type: object
+                type: array
             type: object
         type: object
     served: true

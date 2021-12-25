@@ -197,7 +197,58 @@ type VolumeClaim struct {
 type EngulaClusterStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// List of conditions represents the current state of cluster
+	Conditions []ClusterCondition `json:"conditions,omitempty"`
 }
+
+func (s *EngulaClusterStatus) SetState(typ ClusterConditionType, status metav1.ConditionStatus, now metav1.Time) {
+	c := s.findOrCreate(typ)
+	if c.Status == status {
+		return
+	}
+	c.Status = status
+	c.LastUpdateTime = now
+}
+
+func (s *EngulaClusterStatus) findOrCreate(typ ClusterConditionType) *ClusterCondition {
+	var idx = -1
+	for i, c := range s.Conditions {
+		if c.Type == typ {
+			idx = i
+			break
+		}
+	}
+	if idx >= 0 {
+		return &s.Conditions[idx]
+	}
+
+	s.Conditions = append(s.Conditions, ClusterCondition{
+		Type:           typ,
+		Status:         metav1.ConditionUnknown,
+		LastUpdateTime: metav1.Now(),
+	})
+	return &s.Conditions[len(s.Conditions)-1]
+}
+
+type ClusterCondition struct {
+	// Type of the condition
+	// +kubebuilder:validation:Required
+	Type ClusterConditionType `json:"type"`
+	// Condition status: True, False or Unknown
+	// +kubebuilder:validation:Required
+	Status metav1.ConditionStatus `json:"status"`
+	// The last time for condition updated
+	// +kubebuilder:validation:Required
+	LastUpdateTime metav1.Time `json:"lastUpdateTime"`
+}
+
+type ClusterConditionType string
+
+const (
+	//InitializedCondition string
+	InitializedCondition ClusterConditionType = "Initialized"
+)
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status

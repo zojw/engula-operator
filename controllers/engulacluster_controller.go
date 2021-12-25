@@ -18,8 +18,10 @@ package controllers
 
 import (
 	"context"
-
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -47,11 +49,47 @@ type EngulaClusterReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.10.0/pkg/reconcile
 func (r *EngulaClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
+	log.Info("reconciling engula cluster")
 
-	// TODO(user): your logic here
+	original := &clusterv1alpha1.EngulaCluster{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: req.Name,
+		},
+	}
+	err := r.fetch(ctx, req.Namespace, original)
+	if err != nil {
+		log.Error(err, "failed to retrieve EngulaCluster")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	cluster := original.DeepCopy()
+	cluster.Default()
+	if len(cluster.Status.Conditions) == 0 {
+		now := metav1.Now()
+		cluster.Status.SetState(clusterv1alpha1.InitializedCondition, metav1.ConditionFalse, now)
+	}
 
 	return ctrl.Result{}, nil
+}
+
+func (r *EngulaClusterReconciler) fetch(ctx context.Context, ns string, o client.Object) (err error) {
+	var (
+		accessor metav1.Object
+	)
+	accessor, err = meta.Accessor(o)
+	if err != nil {
+		return
+	}
+	err = r.Client.Get(ctx, makeKey(ns, accessor.GetName()), o)
+	return
+}
+
+func makeKey(ns, name string) types.NamespacedName {
+	return types.NamespacedName{
+		Name:      name,
+		Namespace: ns,
+	}
 }
 
 // SetupWithManager sets up the controller with the Manager.
