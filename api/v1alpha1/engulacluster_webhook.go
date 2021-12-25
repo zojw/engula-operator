@@ -41,7 +41,7 @@ func (r *EngulaCluster) SetupWebhookWithManager(mgr ctrl.Manager) error {
 		Complete()
 }
 
-//+kubebuilder:webhook:path=/mutate-cluster-engula-io-v1alpha1-engulacluster,mutating=true,failurePolicy=fail,sideEffects=None,groups=cluster.engula.io,resources=engulaclusters,verbs=create;update,versions=v1alpha1,name=mengulacluster.kb.io,admissionReviewVersions=v1
+//+kubebuilder:webhook:path=/mutate-cluster-engula-io-v1alpha1-engulacluster,mutating=true,failurePolicy=fail,sideEffects=None,groups=cluster.engula.io,resource=engulaclusters,verbs=create;update,versions=v1alpha1,name=mengulacluster.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Defaulter = &EngulaCluster{}
 
@@ -92,7 +92,7 @@ func setDefaultPollPolicy(image *PodImage) {
 	}
 }
 
-//+kubebuilder:webhook:path=/validate-cluster-engula-io-v1alpha1-engulacluster,mutating=false,failurePolicy=fail,sideEffects=None,groups=cluster.engula.io,resources=engulaclusters,verbs=create;update,versions=v1alpha1,name=vengulacluster.kb.io,admissionReviewVersions=v1
+//+kubebuilder:webhook:path=/validate-cluster-engula-io-v1alpha1-engulacluster,mutating=false,failurePolicy=fail,sideEffects=None,groups=cluster.engula.io,resource=engulaclusters,verbs=create;update,versions=v1alpha1,name=vengulacluster.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Validator = &EngulaCluster{}
 

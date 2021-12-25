@@ -74,7 +74,7 @@ type Kernel struct {
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 	// Disk volumn configuration.
 	// +kubebuilder:validation:Required
 	Volume Volume `json:"volume"`
@@ -96,7 +96,7 @@ type Engine struct {
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 }
 
 type Storage struct {
@@ -115,7 +115,7 @@ type Storage struct {
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 	// Disk volumn configuration.
 	// +kubebuilder:validation:Required
 	Volume Volume `json:"volume"`
@@ -137,7 +137,7 @@ type Journal struct {
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 	// Disk volumn configuration.
 	// +kubebuilder:validation:Required
 	Volume Volume `json:"volume"`
@@ -159,7 +159,7 @@ type Background struct {
 	// (Optional) Resource limits for container.
 	// Default: (not specified)
 	// +optional
-	Resources corev1.ResourceRequirements `json:"resources,omitempty"`
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 }
 
 type PodImage struct {

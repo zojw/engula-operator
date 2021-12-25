@@ -1,14 +1,14 @@
-# Adds namespace to all resources.
+# Adds namespace to all resource.
 namespace: engula-operator-system
 
 # Value of this field is prepended to the
-# names of all resources, e.g. a deployment named
+# names of all resource, e.g. a deployment named
 # "wordpress" becomes "alices-wordpress".
 # Note that it should also match with the prefix (text before '-') of the namespace
 # field above.
 namePrefix: engula-operator-
 
-# Labels to add to all resources and selectors.
+# Labels to add to all resource and selectors.
 #commonLabels:
 #  someName: someValue
 

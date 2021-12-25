@@ -18,10 +18,9 @@ package controllers
 
 import (
 	"context"
-	"k8s.io/apimachinery/pkg/api/meta"
+	"github.com/engula/engula-operator/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -35,9 +34,14 @@ type EngulaClusterReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=cluster.engula.io,resources=engulaclusters,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=cluster.engula.io,resources=engulaclusters/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=cluster.engula.io,resources=engulaclusters/finalizers,verbs=update
+type ResourceReconciler interface {
+	Reconcile() (updated bool, err error)
+	IsChanged() (bool, error)
+}
+
+//+kubebuilder:rbac:groups=cluster.engula.io,resource=engulaclusters,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=cluster.engula.io,resource=engulaclusters/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=cluster.engula.io,resource=engulaclusters/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -52,44 +56,23 @@ func (r *EngulaClusterReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	log := log.FromContext(ctx)
 	log.Info("reconciling engula cluster")
 
-	original := &clusterv1alpha1.EngulaCluster{
+	res := resource.NewResource(ctx, req.Namespace, r.Client)
+
+	cr := &clusterv1alpha1.EngulaCluster{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: req.Name,
 		},
 	}
-	err := r.fetch(ctx, req.Namespace, original)
+	err := res.Fetch(cr)
 	if err != nil {
 		log.Error(err, "failed to retrieve EngulaCluster")
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	cluster := original.DeepCopy()
-	cluster.Default()
-	if len(cluster.Status.Conditions) == 0 {
-		now := metav1.Now()
-		cluster.Status.SetState(clusterv1alpha1.InitializedCondition, metav1.ConditionFalse, now)
-	}
+	origin := cr.DeepCopy()
+	origin.Default()
 
 	return ctrl.Result{}, nil
-}
-
-func (r *EngulaClusterReconciler) fetch(ctx context.Context, ns string, o client.Object) (err error) {
-	var (
-		accessor metav1.Object
-	)
-	accessor, err = meta.Accessor(o)
-	if err != nil {
-		return
-	}
-	err = r.Client.Get(ctx, makeKey(ns, accessor.GetName()), o)
-	return
-}
-
-func makeKey(ns, name string) types.NamespacedName {
-	return types.NamespacedName{
-		Name:      name,
-		Namespace: ns,
-	}
 }
 
 // SetupWithManager sets up the controller with the Manager.
