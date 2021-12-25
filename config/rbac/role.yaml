@@ -1,0 +1,164 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - backgrounds
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - backgrounds/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - backgrounds/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - clusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - clusters/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - clusters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - engines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - engines/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - engines/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - journals
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - journals/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - journals/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - kernels
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - kernels/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - kernels/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - storages
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - storages/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - storages/status
+  verbs:
+  - get
+  - patch
+  - update

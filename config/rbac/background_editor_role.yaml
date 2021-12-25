@@ -1,0 +1,24 @@
+# permissions for end users to edit backgrounds.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: background-editor-role
+rules:
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - backgrounds
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - backgrounds/status
+  verbs:
+  - get

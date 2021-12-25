@@ -1,0 +1,6 @@
+apiVersion: cluster.engula.io/v1alpha1
+kind: Background
+metadata:
+  name: background-sample
+spec:
+  # TODO(user): Add fields here

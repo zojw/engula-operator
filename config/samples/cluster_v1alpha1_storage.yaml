@@ -1,0 +1,6 @@
+apiVersion: cluster.engula.io/v1alpha1
+kind: Storage
+metadata:
+  name: storage-sample
+spec:
+  # TODO(user): Add fields here

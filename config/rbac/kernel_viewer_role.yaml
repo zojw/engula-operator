@@ -1,0 +1,20 @@
+# permissions for end users to view kernels.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kernel-viewer-role
+rules:
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - kernels
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - kernels/status
+  verbs:
+  - get

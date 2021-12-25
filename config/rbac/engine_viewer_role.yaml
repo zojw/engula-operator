@@ -1,0 +1,20 @@
+# permissions for end users to view engines.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: engine-viewer-role
+rules:
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - engines
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.engula.io
+  resources:
+  - engines/status
+  verbs:
+  - get

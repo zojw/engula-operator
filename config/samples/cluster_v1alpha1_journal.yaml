@@ -1,0 +1,6 @@
+apiVersion: cluster.engula.io/v1alpha1
+kind: Journal
+metadata:
+  name: journal-sample
+spec:
+  # TODO(user): Add fields here
