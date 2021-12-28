@@ -21,12 +21,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"strconv"
 )
 
 const (
 	containerName = "unit"
 	volumeName    = "data"
-	mountPath     = "/data"
+	MountPath     = "/data"
 )
 
 var _ ResourceBuilder = &StatefulsetBuilder{}
@@ -96,7 +97,7 @@ func (b *StatefulsetBuilder) Build(current runtime.Object, object client.Object)
 			RollingUpdate: &v1.RollingUpdateStatefulSetStrategy{},
 		},
 	}
-	if err = b.Own().Volume.Apply(volumeName, containerName, mountPath, &sts.Spec, b.Selector); err != nil {
+	if err = b.Own().Volume.Apply(volumeName, containerName, MountPath, &sts.Spec, b.Selector); err != nil {
 		return
 	}
 
@@ -167,8 +168,20 @@ func (b *StatefulsetBuilder) buildEnv() []corev1.EnvVar {
 			},
 		},
 		{
-			Name:  "OP_ADDR",
-			Value: "TODO", // TODO!!!..
+			Name:  "kubecluster",
+			Value: b.ClusterName,
+		},
+		{
+			Name:  "journalport",
+			Value: strconv.Itoa(int(v1alpha1.DefaultJournalPort)), //TODO:...it's not a good way
+		},
+		{
+			Name:  "storageport",
+			Value: strconv.Itoa(int(v1alpha1.DefaultStoragePort)), //TODO:...it's not a good way
+		},
+		{
+			Name:  "kernelport",
+			Value: strconv.Itoa(int(v1alpha1.DefaultKernelPort)), //TODO:...it's not a good way
 		},
 	}
 }

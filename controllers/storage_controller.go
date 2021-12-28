@@ -94,7 +94,8 @@ func (r *StorageReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 			},
 			resource.Storage,
 			"0.0.0.0:"+strconv.Itoa(int(*storage.Spec.Port)),
-			"--mem",
+			"--file",
+			resource.MountPath,
 		),
 	}
 

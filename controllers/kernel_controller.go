@@ -93,7 +93,13 @@ func (r *KernelReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 				}
 			},
 			resource.Kernel,
+			"--journal",
+			"0.0.0.0:9999", // no use but need pass...
+			"--storage",
+			"0.0.0.0:9999", // no use too.
 			"0.0.0.0:"+strconv.Itoa(int(*kernel.Spec.Port)),
+			"--kube",
+			resource.MountPath,
 		),
 	}
 

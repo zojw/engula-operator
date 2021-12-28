@@ -8,14 +8,14 @@ spec:
     name: uhub.service.ucloud.cn/zojw/engula:0.9
     pullPolicy: "Always"
   storage:
-    replicas: 2
+    replicas: 1
     volume:
       spec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "2Gi"
+            storage: "1Gi"
         volumeMode: Filesystem
   journal:
     replicas: 1
@@ -25,5 +25,15 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "2Gi"
+            storage: "1Gi"
+        volumeMode: Filesystem
+  kernel:
+    replicas: 1
+    volume:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1Gi"
         volumeMode: Filesystem

@@ -95,7 +95,8 @@ func (r *JournalReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 			},
 			resource.Journal,
 			"0.0.0.0:"+strconv.Itoa(int(*journal.Spec.Port)),
-			"--mem",
+			"--file",
+			resource.MountPath,
 		),
 	}
 
