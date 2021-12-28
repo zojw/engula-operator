@@ -92,7 +92,7 @@ func (r *EngineReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 					Resources: engine.Spec.Resources,
 				}
 			},
-			resource.Engine,
+			"demo-engine", //...
 			"0.0.0.0:"+strconv.Itoa(int(*engine.Spec.Port)),
 		),
 	}

@@ -89,7 +89,7 @@ func (r *StorageReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 					Image:     storage.Spec.Image,
 					Port:      storage.Spec.Port,
 					Resources: storage.Spec.Resources,
-					Volume:    storage.Spec.Volume,
+					Volume:    &storage.Spec.Volume,
 				}
 			},
 			resource.Storage,

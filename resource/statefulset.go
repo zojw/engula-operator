@@ -37,7 +37,7 @@ type StatefulResource struct {
 	Image     *v1alpha1.PodImage
 	Port      *int32
 	Resources corev1.ResourceRequirements
-	Volume    v1alpha1.VolumeClaim
+	Volume    *v1alpha1.VolumeClaim
 }
 
 type StatefulsetBuilder struct {

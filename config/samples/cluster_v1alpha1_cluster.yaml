@@ -37,3 +37,16 @@ spec:
           requests:
             storage: "1Gi"
         volumeMode: Filesystem
+  engine:
+    replicas: 1
+    image:
+      name: uhub.service.ucloud.cn/zojw/engula:0.9
+      pullPolicy: "Always"
+    volume:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1Gi"
+        volumeMode: Filesystem

@@ -45,6 +45,9 @@ type EngineSpec struct {
 	// Default: (not specified)
 	// +optional
 	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
+	// Disk volumn configuration.
+	// +kubebuilder:validation:Required
+	Volume VolumeClaim `json:"volume"`
 }
 
 // EngineStatus defines the observed state of Engine

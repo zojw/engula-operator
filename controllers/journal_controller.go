@@ -90,7 +90,7 @@ func (r *JournalReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 					Image:     journal.Spec.Image,
 					Port:      journal.Spec.Port,
 					Resources: journal.Spec.Resources,
-					Volume:    journal.Spec.Volume,
+					Volume:    &journal.Spec.Volume,
 				}
 			},
 			resource.Journal,

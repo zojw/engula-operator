@@ -89,7 +89,7 @@ func (r *KernelReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 					Image:     kernel.Spec.Image,
 					Port:      kernel.Spec.Port,
 					Resources: kernel.Spec.Resources,
-					Volume:    kernel.Spec.Volume,
+					Volume:    &kernel.Spec.Volume,
 				}
 			},
 			resource.Kernel,
