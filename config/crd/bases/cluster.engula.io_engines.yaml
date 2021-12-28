@@ -36,10 +36,58 @@ spec:
           spec:
             description: EngineSpec defines the desired state of Engine
             properties:
-              foo:
-                description: Foo is an example field of Engine. Edit engine_types.go
-                  to remove/update
-                type: string
+              image:
+                description: (Optional) Image uses for engine. use EngulaCluster's
+                  image if not specified
+                properties:
+                  name:
+                    description: 'Container image with version. For instance: engula/engula:v0.3'
+                    type: string
+                  pullPolicy:
+                    description: '(Optional) PullPolicy for the image, which defaults
+                      to IfNotPresent. Default: IfNotPresent'
+                    type: string
+                required:
+                - name
+                type: object
+              port:
+                description: '(Optional) Port use for expose serivce. Default: 24568'
+                format: int32
+                type: integer
+              replicas:
+                description: Number of engine replicas (pods) in the cluster
+                format: int32
+                minimum: 0
+                type: integer
+              resource:
+                description: '(Optional) Resource limits for container. Default: (not
+                  specified)'
+                properties:
+                  limits:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: 'Limits describes the maximum amount of compute resources
+                      allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                    type: object
+                  requests:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    description: 'Requests describes the minimum amount of compute
+                      resources required. If Requests is omitted for a container,
+                      it defaults to Limits if that is explicitly specified, otherwise
+                      to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                    type: object
+                type: object
+            required:
+            - replicas
             type: object
           status:
             description: EngineStatus defines the observed state of Engine

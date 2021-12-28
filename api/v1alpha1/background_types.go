@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,8 +29,22 @@ type BackgroundSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of Background. Edit background_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Number of background replicas (pods) in the cluster
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Required
+	Replicas int32 `json:"replicas"`
+	// (Optional) Image uses for background.
+	// use EngulaCluster's image if not specified
+	// +optional
+	Image *PodImage `json:"image,omitempty"`
+	// (Optional) Port use for expose serivce.
+	// Default: 24571
+	// +optional
+	Port *int32 `json:"port,omitempty"`
+	// (Optional) Resource limits for container.
+	// Default: (not specified)
+	// +optional
+	Resources corev1.ResourceRequirements `json:"resource,omitempty"`
 }
 
 // BackgroundStatus defines the observed state of Background

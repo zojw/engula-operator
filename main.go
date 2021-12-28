@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	"k8s.io/client-go/kubernetes"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -78,9 +79,16 @@ func main() {
 		os.Exit(1)
 	}
 
+	clientset, err := kubernetes.NewForConfig(mgr.GetConfig())
+	if err != nil {
+		setupLog.Error(err, "unable to create clientset", "clientset", "clientset")
+		os.Exit(1)
+	}
+
 	if err = (&controllers.ClusterReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
+		Client:    mgr.GetClient(),
+		Scheme:    mgr.GetScheme(),
+		Clientset: clientset,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Cluster")
 		os.Exit(1)
@@ -120,6 +128,30 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Engine")
 		os.Exit(1)
 	}
+	//if err = (&clusterv1alpha1.Cluster{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Cluster")
+	//	os.Exit(1)
+	//}
+	//if err = (&clusterv1alpha1.Journal{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Journal")
+	//	os.Exit(1)
+	//}
+	//if err = (&clusterv1alpha1.Storage{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Storage")
+	//	os.Exit(1)
+	//}
+	//if err = (&clusterv1alpha1.Kernel{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Kernel")
+	//	os.Exit(1)
+	//}
+	//if err = (&clusterv1alpha1.Engine{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Engine")
+	//	os.Exit(1)
+	//}
+	//if err = (&clusterv1alpha1.Background{}).SetupWebhookWithManager(mgr); err != nil {
+	//	setupLog.Error(err, "unable to create webhook", "webhook", "Background")
+	//	os.Exit(1)
+	//}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {

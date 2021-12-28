@@ -1,0 +1,256 @@
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: mutating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-background
+  failurePolicy: Fail
+  name: mbackground.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - backgrounds
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-cluster
+  failurePolicy: Fail
+  name: mcluster.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - clusters
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-engine
+  failurePolicy: Fail
+  name: mengine.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - engines
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-journal
+  failurePolicy: Fail
+  name: mjournal.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - journals
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-kernel
+  failurePolicy: Fail
+  name: mkernel.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - kernels
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-cluster-engula-io-v1alpha1-storage
+  failurePolicy: Fail
+  name: mstorage.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storages
+  sideEffects: None
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: validating-webhook-configuration
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-background
+  failurePolicy: Fail
+  name: vbackground.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - backgrounds
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-cluster
+  failurePolicy: Fail
+  name: vcluster.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - clusters
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-engine
+  failurePolicy: Fail
+  name: vengine.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - engines
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-journal
+  failurePolicy: Fail
+  name: vjournal.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - journals
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-kernel
+  failurePolicy: Fail
+  name: vkernel.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - kernels
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-cluster-engula-io-v1alpha1-storage
+  failurePolicy: Fail
+  name: vstorage.kb.io
+  rules:
+  - apiGroups:
+    - cluster.engula.io
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - storages
+  sideEffects: None

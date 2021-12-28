@@ -13,6 +13,10 @@ resources:
   kind: Cluster
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -22,6 +26,10 @@ resources:
   kind: Kernel
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -31,6 +39,10 @@ resources:
   kind: Journal
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -40,6 +52,10 @@ resources:
   kind: Storage
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -49,6 +65,10 @@ resources:
   kind: Background
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 - api:
     crdVersion: v1
     namespaced: true
@@ -58,4 +78,8 @@ resources:
   kind: Engine
   path: github.com/engula/engula-operator/api/v1alpha1
   version: v1alpha1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
 version: "3"

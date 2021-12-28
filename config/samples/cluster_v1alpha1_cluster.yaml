@@ -3,4 +3,27 @@ kind: Cluster
 metadata:
   name: cluster-sample
 spec:
-  # TODO(user): Add fields here
+  name: sample
+  image:
+    name: uhub.service.ucloud.cn/zojw/engula:0.9
+    pullPolicy: "Always"
+  storage:
+    replicas: 2
+    volume:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "2Gi"
+        volumeMode: Filesystem
+  journal:
+    replicas: 1
+    volume:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "2Gi"
+        volumeMode: Filesystem

@@ -18,7 +18,11 @@ package controllers
 
 import (
 	"context"
+	"strconv"
+	"time"
 
+	"github.com/engula/engula-operator/resource"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -36,21 +40,73 @@ type JournalReconciler struct {
 //+kubebuilder:rbac:groups=cluster.engula.io,resources=journals,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=cluster.engula.io,resources=journals/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=cluster.engula.io,resources=journals/finalizers,verbs=update
+//+kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=core,resources=services/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=core,resources=services/finalizers,verbs=get;list;watch
+//+kubebuilder:rbac:groups=apps,resources=statefulsets,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=apps,resources=statefulsets/scale,verbs=get;watch;update
+//+kubebuilder:rbac:groups=apps,resources=statefulsets/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=apps,resources=statefulsets/finalizers,verbs=get;list;watch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the Journal object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.10.0/pkg/reconcile
 func (r *JournalReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
+	log.Info("reconciling journal")
 
-	// TODO(user): your logic here
+	res := resource.NewManagedResources(ctx, req.Namespace, r.Client)
 
+	journal := resource.JournalQueryObject(req.Name)
+	err := res.Fetch(journal)
+	if err != nil {
+		if !errors.IsNotFound(err) {
+			log.Error(err, "failed to retrieve journal")
+		}
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+	journal = journal.DeepCopy()
+	journal.Default()
+
+	var clusterName string
+	if clusterName, err = resource.GetClusterName(journal.ObjectMeta); err != nil {
+		return ctrl.Result{}, err
+	}
+	labels := resource.MakeLabels(clusterName, resource.Journal)
+	journal = journal.DeepCopy()
+	var builders = []resource.ResourceBuilder{
+		resource.NewServiceBuilder(req.Name, labels, func() *resource.ServiceResource {
+			return &resource.ServiceResource{
+				Port: journal.Spec.Port,
+			}
+		}),
+		resource.NewStatefulsetBuilder(req.Name, clusterName,
+			labels,
+			func() *resource.StatefulResource {
+				return &resource.StatefulResource{
+					Replicas:  journal.Spec.Replicas,
+					Image:     journal.Spec.Image,
+					Port:      journal.Spec.Port,
+					Resources: journal.Spec.Resources,
+					Volume:    journal.Spec.Volume,
+				}
+			},
+			resource.Journal,
+			"0.0.0.0:"+strconv.Itoa(int(*journal.Spec.Port)),
+			"--mem",
+		),
+	}
+
+	for _, builder := range builders {
+		if _, err = res.ReconcileOne(builder); err != nil {
+			log.Error(err, "failed to reconcile cluster")
+			return ctrl.Result{RequeueAfter: 30 * time.Second}, err
+		}
+	}
+
+	log.Info("reconcile journal completed")
 	return ctrl.Result{}, nil
 }
 
