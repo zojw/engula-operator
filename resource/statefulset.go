@@ -183,6 +183,10 @@ func (b *StatefulsetBuilder) buildEnv() []corev1.EnvVar {
 			Name:  "kernelport",
 			Value: strconv.Itoa(int(v1alpha1.DefaultKernelPort)), //TODO:...it's not a good way
 		},
+		{
+			Name:  "RUST_BACKTRACE",
+			Value: "1",
+		},
 	}
 }
 

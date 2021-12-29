@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -99,7 +100,7 @@ func (r *KernelReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 			"0.0.0.0:9999", // no use too.
 			"0.0.0.0:"+strconv.Itoa(int(*kernel.Spec.Port)),
 			"--kube",
-			resource.MountPath,
+			filepath.Join(resource.MountPath, "kernel"),
 		),
 	}
 
